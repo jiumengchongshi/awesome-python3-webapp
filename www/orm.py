@@ -60,7 +60,7 @@ async def execute(sql,args):
 def create_args_string(num):
     L = []
     for _ in range(num):
-        L.appent('?')
+        L.append('?')
     return ','.join(L)
 class ModelMetaclass(type):
 
@@ -104,7 +104,7 @@ class ModelMetaclass(type):
 
 
 #首先要定义的是所有ORM映射的基类Model。
-class Model(dict,metaclass=Modelmetaclass):
+class Model(dict,metaclass=ModelMetaclass):
     def __init__(self,**kw):
         super(Model,self).__init__(**kw)
 
@@ -207,7 +207,7 @@ class Field(object):
         self.default = default
 
     def __str__(self):
-        return '<%s, %s:%s>' % (self.__class__.name__,self.column_type,self.name)
+        return '<%s, %s:%s>' % (self.__class__.__name__,self.column_type,self.name)
 
 
 class StringField(Field):
@@ -220,12 +220,12 @@ class BooleanField(Field):
         super().__init__(name, 'boolean', False, default)
 
 
-class IntegerField():
+class IntegerField(Field):
     def __init__(self, name=None, primary_key=False, default=0):
         super().__init__(name, 'bigint', primary_key, default)
 
 
-class FloatField():
+class FloatField(Field):
     def __init__(self, name=None, primary_key=False, default=0.0):
         super().__init__(name, 'real', primary_key, default)
 
@@ -233,5 +233,4 @@ class FloatField():
 class TextField(Field):
     def __init__(self, name=None, default=None):
         super().__init__(name, 'text', False, default)
-
 
